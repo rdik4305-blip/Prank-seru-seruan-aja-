@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prank Hub - Tools Seru-seruan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus+Jakarta+Sans', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .success-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="pb-10">
+
+    <!-- Header / Navbar -->
+    <nav class="gradient-bg text-white p-4 shadow-lg sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <i class="fas fa-ghost"></i> PrankHub
+            </h1>
+            <div class="bg-white/20 px-3 py-1 rounded-full text-sm">
+                Saldo: <span id="global-balance" class="font-bold">Rp 1.500.000</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto p-4 mt-4">
+        
+        <!-- Tab Navigation -->
+        <div id="home-view">
+            <h2 class="text-lg font-bold mb-4 text-gray-700">Pilih Jenis Prank:</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                
+                <!-- GoFood -->
+                <button onclick="showPage('gofood')" class="card-hover bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-3 text-xl">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <span class="font-semibold text-gray-800">Prank GoFood</span>
+                </button>
+
+                <!-- Transfer -->
+                <button onclick="showPage('transfer')" class="card-hover bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-3 text-xl">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <span class="font-semibold text-gray-800">Prank Transfer</span>
+                </button>
+
+                <!-- Pulsa -->
+                <button onclick="showPage('pulsa')" class="card-hover bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                    <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mb-3 text-xl">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <span class="font-semibold text-gray-800">Prank Pulsa/PLN</span>
+                </button>
+
+                <!-- Grab -->
+                <button onclick="showPage('grab')" class="card-hover bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-3 text-xl">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <span class="font-semibold text-gray-800">Prank Grab</span>
+                </button>
+
+                <!-- TopUp -->
+                <button onclick="showPage('topup')" class="card-hover bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-3 text-xl">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <span class="font-semibold text-gray-800">Prank TopUp</span>
+                </button>
+
+                <!-- Locked Chatbot -->
+                <div class="bg-gray-200 p-6 rounded-2xl border border-dashed border-gray-400 flex flex-col items-center text-center opacity-70">
+                    <div class="w-12 h-12 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center mb-3 text-xl">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <span class="font-semibold text-gray-500 italic">Chatbot Gaib</span>
+                    <span class="text-[10px] text-gray-400 mt-1">COMING SOON</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PAGE: GOFOOD -->
+        <div id="page-gofood" class="hidden">
+            <button onclick="showPage('home')" class="mb-4 text-gray-500"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 class="text-xl font-bold text-red-600 mb-4 flex items-center gap-2">
+                    <i class="fas fa-utensils"></i> Order GoFood Prank
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Target</label>
+                        <input type="text" id="gf-name" placeholder="Contoh: Teman Sebangku" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-red-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Target</label>
+                        <textarea id="gf-address" placeholder="Masukkan alamat lengkap target..." class="w-full p-3 border rounded-xl h-24 focus:ring-2 focus:ring-red-500 outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Menu Makanan (Palsu)</label>
+                        <select class="w-full p-3 border rounded-xl outline-none">
+                            <option>10x Ayam Geprek Level 100</option>
+                            <option>5x Pizza Jumbo Extra Cheese</option>
+                            <option>Martabak Telur 4 Telur Bebek</option>
+                        </select>
+                    </div>
+                    <button onclick="executePrank('gofood')" class="w-full bg-red-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-red-700 active:scale-95 transition-all">PESAN SEKARANG</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: TRANSFER -->
+        <div id="page-transfer" class="hidden">
+            <button onclick="showPage('home')" class="mb-4 text-gray-500"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 class="text-xl font-bold text-blue-600 mb-4 flex items-center gap-2">
+                    <i class="fas fa-money-bill-wave"></i> Mobile Banking Prank
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-xl mb-4">
+                        <p class="text-xs text-blue-600">Saldo Tersedia:</p>
+                        <p id="transfer-balance" class="text-2xl font-bold text-blue-800">Rp 1.500.000</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Penerima</label>
+                        <input type="text" id="tr-name" placeholder="Nama target" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Rekening</label>
+                        <input type="number" id="tr-acc" placeholder="Contoh: 0081234455" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nominal Transfer (Rp)</label>
+                        <input type="number" id="tr-amount" placeholder="Contoh: 500000" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+                    <button onclick="executePrank('transfer')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-blue-700 active:scale-95 transition-all">KIRIM SEKARANG</button>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="mt-6">
+                <h4 class="font-bold text-gray-700 mb-2">Riwayat Terakhir</h4>
+                <div id="transfer-history" class="space-y-2 text-sm">
+                    <div class="p-3 bg-white rounded-lg border border-gray-200 text-gray-400 italic">Belum ada transaksi.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: PULSA -->
+        <div id="page-pulsa" class="hidden">
+            <button onclick="showPage('home')" class="mb-4 text-gray-500"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 class="text-xl font-bold text-yellow-600 mb-4 flex items-center gap-2">
+                    <i class="fas fa-bolt"></i> Isi Pulsa & Token Prank
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex gap-2 p-1 bg-gray-100 rounded-xl mb-2">
+                        <button onclick="setPulsaMode('hp')" id="btn-pulsa-hp" class="flex-1 py-2 rounded-lg bg-white shadow-sm font-bold text-yellow-700">HP</button>
+                        <button onclick="setPulsaMode('pln')" id="btn-pulsa-pln" class="flex-1 py-2 rounded-lg font-bold text-gray-500">PLN</button>
+                    </div>
+                    
+                    <div id="pulsa-hp-fields">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nomor HP Target</label>
+                        <input type="number" id="pl-number" placeholder="08xxxxxxxxx" class="w-full p-3 border rounded-xl outline-none">
+                        <div class="grid grid-cols-3 gap-2 mt-3">
+                            <button class="p-2 border rounded-lg hover:bg-yellow-50 text-xs">Telkomsel</button>
+                            <button class="p-2 border rounded-lg hover:bg-yellow-50 text-xs">Indosat</button>
+                            <button class="p-2 border rounded-lg hover:bg-yellow-50 text-xs">Tri</button>
+                            <button class="p-2 border rounded-lg hover:bg-yellow-50 text-xs">Smartfren</button>
+                            <button class="p-2 border rounded-lg hover:bg-yellow-50 text-xs">XL</button>
+                            <button class="p-2 border rounded-lg hover:bg-yellow-50 text-xs">Axis</button>
+                        </div>
+                    </div>
+
+                    <div id="pulsa-pln-fields" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Meteran / ID Pelanggan</label>
+                        <input type="number" placeholder="5432xxxxxxxx" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nominal</label>
+                        <select class="w-full p-3 border rounded-xl outline-none">
+                            <option>Rp 50.000</option>
+                            <option>Rp 100.000</option>
+                            <option>Rp 200.000</option>
+                            <option>Rp 500.000</option>
+                        </select>
+                    </div>
+                    <button onclick="executePrank('pulsa')" class="w-full bg-yellow-500 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-yellow-600 active:scale-95 transition-all">BUM! ISI SEKARANG</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: GRAB -->
+        <div id="page-grab" class="hidden">
+            <button onclick="showPage('home')" class="mb-4 text-gray-500"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 class="text-xl font-bold text-green-600 mb-4 flex items-center gap-2">
+                    <i class="fas fa-car-side"></i> Grab Prank
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Penumpang</label>
+                        <input type="text" id="gb-name" placeholder="Nama kamu/target" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Titik Lokasi (Penjemputan)</label>
+                        <input type="text" id="gb-loc" placeholder="Masukkan lokasi penjemputan" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tujuan</label>
+                        <input type="text" placeholder="Ke mana tujuannya?" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+                    <button onclick="executePrank('grab')" class="w-full bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-green-700 active:scale-95 transition-all">BUM! PESAN GRAB</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: TOPUP -->
+        <div id="page-topup" class="hidden">
+            <button onclick="showPage('home')" class="mb-4 text-gray-500"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
+                <h3 class="text-xl font-bold text-purple-600 mb-4 flex items-center gap-2">
+                    <i class="fas fa-gamepad"></i> Game Top Up Prank
+                </h3>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-4 gap-2 mb-2">
+                        <div class="border p-2 rounded-lg flex flex-col items-center border-purple-500 bg-purple-50">
+                            <span class="text-[10px]">MLBB</span>
+                        </div>
+                        <div class="border p-2 rounded-lg flex flex-col items-center">
+                            <span class="text-[10px]">Free Fire</span>
+                        </div>
+                        <div class="border p-2 rounded-lg flex flex-col items-center">
+                            <span class="text-[10px]">PUBG</span>
+                        </div>
+                        <div class="border p-2 rounded-lg flex flex-col items-center">
+                            <span class="text-[10px]">Genshin</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">User ID</label>
+                        <input type="number" id="tu-id" placeholder="ID Akun" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Server ID</label>
+                        <input type="number" id="tu-server" placeholder="(1234)" class="w-full p-3 border rounded-xl outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Nominal</label>
+                        <select id="tu-nominal" class="w-full p-3 border rounded-xl outline-none">
+                            <option value="125000">966 Diamonds - Rp 125.000</option>
+                            <option value="250000">2010 Diamonds - Rp 250.000</option>
+                            <option value="500000">4020 Diamonds - Rp 500.000</option>
+                        </select>
+                    </div>
+                    <div class="text-[10px] text-gray-500">*Pembayaran otomatis memotong saldo rekening website.</div>
+                    <button onclick="executePrank('topup')" class="w-full bg-purple-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-purple-700 active:scale-95 transition-all">BUM! TOP UP SEKARANG</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SUCCESS OVERLAY -->
+    <div id="success-overlay" class="success-overlay">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-8 text-center animate-bounce-short">
+            <div id="overlay-loader" class="flex flex-col items-center">
+                <div class="loader mb-4"></div>
+                <p class="text-gray-600 font-medium">Sedang memproses...</p>
+            </div>
+            <div id="overlay-content" class="hidden flex flex-col items-center">
+                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-4xl mb-4">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h4 id="result-title" class="text-2xl font-bold text-gray-800 mb-2">Berhasil!</h4>
+                <p id="result-desc" class="text-gray-600 mb-6"></p>
+                <button onclick="closeOverlay()" class="w-full bg-gray-800 text-white font-bold py-3 rounded-xl">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let balance = 1500000;
+        let history = [];
+
+        function showPage(page) {
+            // Hide all
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('page-gofood').classList.add('hidden');
+            document.getElementById('page-transfer').classList.add('hidden');
+            document.getElementById('page-pulsa').classList.add('hidden');
+            document.getElementById('page-grab').classList.add('hidden');
+            document.getElementById('page-topup').classList.add('hidden');
+
+            if (page === 'home') {
+                document.getElementById('home-view').classList.remove('hidden');
+            } else {
+                document.getElementById('page-' + page).classList.remove('hidden');
+            }
+            window.scrollTo(0,0);
+        }
+
+        function setPulsaMode(mode) {
+            const hpFields = document.getElementById('pulsa-hp-fields');
+            const plnFields = document.getElementById('pulsa-pln-fields');
+            const btnHp = document.getElementById('btn-pulsa-hp');
+            const btnPln = document.getElementById('btn-pulsa-pln');
+
+            if (mode === 'hp') {
+                hpFields.classList.remove('hidden');
+                plnFields.classList.add('hidden');
+                btnHp.className = "flex-1 py-2 rounded-lg bg-white shadow-sm font-bold text-yellow-700";
+                btnPln.className = "flex-1 py-2 rounded-lg font-bold text-gray-500";
+            } else {
+                hpFields.classList.add('hidden');
+                plnFields.classList.remove('hidden');
+                btnPln.className = "flex-1 py-2 rounded-lg bg-white shadow-sm font-bold text-yellow-700";
+                btnHp.className = "flex-1 py-2 rounded-lg font-bold text-gray-500";
+            }
+        }
+
+        function formatRupiah(num) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
+        }
+
+        function updateUI() {
+            document.getElementById('global-balance').innerText = formatRupiah(balance);
+            document.getElementById('transfer-balance').innerText = formatRupiah(balance);
+            
+            const histList = document.getElementById('transfer-history');
+            if (history.length > 0) {
+                histList.innerHTML = history.map(h => `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-xs">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">${h.to}</p>
+                                <p class="text-[10px] text-gray-400">${h.date}</p>
+                            </div>
+                        </div>
+                        <p class="font-bold text-red-500">-${formatRupiah(h.amount)}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function executePrank(type) {
+            const overlay = document.getElementById('success-overlay');
+            const loader = document.getElementById('overlay-loader');
+            const content = document.getElementById('overlay-content');
+            const resTitle = document.getElementById('result-title');
+            const resDesc = document.getElementById('result-desc');
+
+            overlay.style.display = 'flex';
+            loader.classList.remove('hidden');
+            content.classList.add('hidden');
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                content.classList.remove('hidden');
+
+                if (type === 'gofood') {
+                    const name = document.getElementById('gf-name').value || "Target";
+                    resTitle.innerText = "Pesanan Terkirim!";
+                    resDesc.innerText = `Driver sedang menuju alamat ${name}. Silakan tunggu pesanannya ya!`;
+                } 
+                else if (type === 'transfer') {
+                    const name = document.getElementById('tr-name').value || "Penerima";
+                    const amount = parseInt(document.getElementById('tr-amount').value) || 0;
+                    
+                    if (amount > balance) {
+                        resTitle.innerText = "Gagal!";
+                        resDesc.innerText = "Saldo Anda tidak mencukupi untuk melakukan transfer ini.";
+                        return;
+                    }
+
+                    balance -= amount;
+                    history.unshift({
+                        to: name,
+                        amount: amount,
+                        date: new Date().toLocaleTimeString()
+                    });
+                    updateUI();
+                    
+                    resTitle.innerText = "Transfer Berhasil!";
+                    resDesc.innerText = `Dana sebesar ${formatRupiah(amount)} telah terkirim ke rekening ${name}.`;
+                }
+                else if (type === 'pulsa') {
+                    const num = document.getElementById('pl-number').value || "08xx";
+                    resTitle.innerText = "BUM! Berhasil";
+                    resDesc.innerText = `Pulsa berhasil dikirim ke nomor ${num}. Saldo Anda telah dipotong.`;
+                }
+                else if (type === 'grab') {
+                    const loc = document.getElementById('gb-loc').value || "Lokasi Anda";
+                    resTitle.innerText = "Driver Ditemukan!";
+                    resDesc.innerText = `Bpk. Agus (GrabCar) sedang menuju ${loc}. Harap bersiap!`;
+                }
+                else if (type === 'topup') {
+                    const id = document.getElementById('tu-id').value || "12345";
+                    const nom = parseInt(document.getElementById('tu-nominal').value);
+                    
+                    if (nom > balance) {
+                        resTitle.innerText = "Gagal!";
+                        resDesc.innerText = "Saldo website tidak cukup untuk topup.";
+                        return;
+                    }
+                    
+                    balance -= nom;
+                    updateUI();
+                    resTitle.innerText = "Top Up Berhasil!";
+                    resDesc.innerText = `Item game telah dikirim ke ID: ${id}. Terima kasih!`;
+                }
+
+            }, 2500);
+        }
+
+        function closeOverlay() {
+            document.getElementById('success-overlay').style.display = 'none';
+        }
+
+        // Init
+        updateUI();
+    </script>
+</body>
+</html>
